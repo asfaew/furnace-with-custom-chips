@@ -117,20 +117,20 @@ void SoundUnit::NextSample(short* l, short* r) {
       }
       if ((cycle[i]&0xf80000)!=(ocycle[i]&0xf80000)) {
         if ((chan[i].flags0&7)==4) {
-          lfsr[i]=(lfsr[i]>>1|(((lfsr[i]) ^ (lfsr[i] >> 2) ^ (lfsr[i] >> 3) ^ (lfsr[i] >> 5) ) & 1)<<31);
+          lfsr[i]=lfsr[i]+lfsr[(i+3)%8];
         } else {
           switch ((chan[i].duty>>4)&3) {
             case 0:
-              lfsr[i]=(lfsr[i]>>1|(((lfsr[i] >> 3) ^ (lfsr[i] >> 4) ) & 1)<<5);
+              lfsr[i]=lfsr[i]+lfsr[(i+7)%8];
               break;
             case 1:
-              lfsr[i]=(lfsr[i]>>1|(((lfsr[i] >> 2) ^ (lfsr[i] >> 3) ) & 1)<<5);
+              lfsr[i]=lfsr[i]+lfsr[(i+3)%8]/3+lfsr[(i+4)%8]/3+lfsr[(i+5)%8]/3;
               break;
             case 2:
-              lfsr[i]=(lfsr[i]>>1|(((lfsr[i]) ^ (lfsr[i] >> 2) ^ (lfsr[i] >> 3) ) & 1)<<5);
+              lfsr[i]=lfsr[i]+lfsr[(i+3)%8]/2+lfsr[(i+5)%8];
               break;
             case 3:
-              lfsr[i]=(lfsr[i]>>1|(((lfsr[i]) ^ (lfsr[i] >> 2) ^ (lfsr[i] >> 3) ^ (lfsr[i] >> 5) ) & 1)<<5);
+              lfsr[i]=lfsr[i]+lfsr[(i+3)%8];
               break;
           }
           if ((lfsr[i]&63)==0) {
