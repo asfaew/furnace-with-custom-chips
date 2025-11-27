@@ -22,7 +22,7 @@
 
 #include "../dispatch.h"
 #include "../../fixedQueue.h"
-#include "sound/su.h"
+#include "sound/hairrsnd.h"
 
 class DivPlatformSoundUnit: public DivDispatch {
   struct Channel: public SharedChannel<signed char> {
